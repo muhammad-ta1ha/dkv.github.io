@@ -1,4 +1,93 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Knowledge Vault</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #F8F5F0;
+            font-family: 'Georgia', serif;
+            color: #3D0C02;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2em;
+            color: #800000;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            display: inline-block;
+            background-color: #800000;
+            width: 150px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        label:hover {
+            background-color: #600000;
+        }
+        #fileName {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #800000;
+            width: 400px;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #600000;
+        }
+        p#status {
+            margin-top: 10px;
+            font-style: italic;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Your Document</h1>
+        <form id="uploadForm">
+            <label for="fileInput">Choose File</label>
+            <input type="file" id="fileInput" required>
+            <p id="fileName">No file chosen</p> <!-- Custom text for selected file -->
+            <button type="submit">Upload</button>
+        </form>
+        <p id="status"></p>
+    </div>
+
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
         let fileInput = document.getElementById("fileInput");
         let fileNameDisplay = document.getElementById("fileName");
@@ -40,3 +129,6 @@
         });
     });
 </script>
+
+</body>
+</html>
