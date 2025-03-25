@@ -111,7 +111,8 @@
             formData.append("file", fileInput.files[0]);
 
             try {
-                let response = await fetch("http://172.31.128.10:8080/upload", {
+                let response = await fetch("https://56b6da75-19b2-4985-9a80-c524baacedcc-00-43eoa5alxasz.sisko.replit.dev/upload", {
+                    
                     method: "POST",
                     body: formData
                 });
