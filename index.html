@@ -22,7 +22,7 @@
             formData.append("file", fileInput.files[0]);
 
             try {
-                let response = await fetch("http://172.31.128.10:8080", {
+                let response = await fetch("http://172.31.128.10:8080/upload", {
                     method: "POST",
                     body: formData
                 });
