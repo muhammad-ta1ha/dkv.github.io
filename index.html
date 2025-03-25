@@ -38,7 +38,7 @@
         label {
             display: inline-block;
             background-color: #800000;
-	    width: 150px;
+            width: 150px;
             color: white;
             padding: 10px 20px;
             font-size: 1em;
@@ -55,7 +55,7 @@
         }
         button {
             background-color: #800000;
-	    width: 400px;
+            width: 400px;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -70,7 +70,8 @@
         p#status {
             margin-top: 10px;
             font-style: italic;
-            color: #555;
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
@@ -87,11 +88,13 @@
     </div>
 
     <script>
+        // Update filename display when a file is selected
         document.getElementById("fileInput").addEventListener("change", function() {
             let fileName = this.files.length > 0 ? this.files[0].name : "No file chosen";
             document.getElementById("fileName").textContent = fileName;
         });
-    <script>
+
+        // Handle file upload
         document.getElementById("uploadForm").addEventListener("submit", async function(event) {
             event.preventDefault();
 
@@ -101,20 +104,23 @@
             let formData = new FormData();
             formData.append("file", fileInput.files[0]);
 
-            let response = await fetch("https://random-name.ngrok.io/upload", {  // Replace with your ngrok URL
-                method: "POST",
-                body: formData
-            });
+            try {
+                let response = await fetch("http://172.31.128.10:8080/upload", {  // Replace with your backend URL
+                    method: "POST",
+                    body: formData
+                });
 
-            let result = await response.json();
+                let result = await response.json();
 
-            if (result.message) {
-                document.getElementById("status").textContent = `Uploaded: ${result.filename}\nHash: ${result.hash}`;
-            } else {
-                document.getElementById("status").textContent = "Upload failed!";
+                if (result.message) {
+                    document.getElementById("status").innerHTML = `✅ Uploaded: <b>${result.filename}</b><br>🔗 Hash: <b>${result.hash}</b>`;
+                } else {
+                    document.getElementById("status").textContent = "❌ Upload failed!";
+                }
+            } catch (error) {
+                document.getElementById("status").textContent = "❌ Server error!";
             }
         });
     </script>
-
 </body>
 </html>
