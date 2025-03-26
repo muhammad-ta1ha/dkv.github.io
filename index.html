@@ -67,11 +67,22 @@
         button:hover {
             background-color: #600000;
         }
-        p#status {
-            margin-top: 10px;
-            font-style: italic;
-            font-weight: bold;
-            color: #333;
+        #status-container {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f1e6;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: none;
+        }
+        #status-container p {
+            margin: 5px 0;
+        }
+        #hash {
+            font-family: monospace;
+            word-wrap: break-word;
+            color: #600000;
         }
     </style>
 </head>
@@ -84,13 +95,21 @@
             <p id="fileName">No file chosen</p>
             <button type="submit">Upload</button>
         </form>
-        <p id="status"></p>
+        <div id="status-container">
+            <p id="upload-status"></p>
+            <p><strong>📄 File:</strong> <span id="uploaded-file"></span></p>
+            <p><strong>🔗 Hash:</strong> <span id="hash"></span></p>
+        </div>
     </div>
 
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         let fileInput = document.getElementById("fileInput");
         let fileNameDisplay = document.getElementById("fileName");
+        let statusContainer = document.getElementById("status-container");
+        let uploadedFile = document.getElementById("uploaded-file");
+        let hashOutput = document.getElementById("hash");
+        let uploadStatus = document.getElementById("upload-status");
 
         fileInput.addEventListener("change", function () {
             let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
@@ -110,7 +129,6 @@
 
             try {
                 let response = await fetch("https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/upload", {
-                    
                     method: "POST",
                     body: formData
                 });
@@ -118,16 +136,20 @@
                 let result = await response.json();
 
                 if (result.message) {
-                    document.getElementById("status").innerHTML = `✅ Uploaded: <b>${result.filename}</b><br>🔗 Hash: <b>${result.hash}</b>`;
+                    statusContainer.style.display = "block";
+                    uploadStatus.innerHTML = "✅ <strong>Upload Successful!</strong>";
+                    uploadedFile.textContent = result.filename;
+                    hashOutput.textContent = result.hash;
                 } else {
-                    document.getElementById("status").textContent = "❌ Upload failed!";
+                    statusContainer.style.display = "block";
+                    uploadStatus.innerHTML = "❌ <strong>Upload Failed!</strong>";
                 }
             } catch (error) {
-                document.getElementById("status").textContent = "❌ Server error!";
+                statusContainer.style.display = "block";
+                uploadStatus.innerHTML = "❌ <strong>Server Error!</strong>";
             }
         });
     });
-</script>
-
+    </script>
 </body>
 </html>
