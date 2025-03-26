@@ -81,7 +81,7 @@
         <form id="uploadForm">
             <label for="fileInput">Choose File</label>
             <input type="file" id="fileInput" required>
-            <p id="fileName">No file chosen</p> <!-- Custom text for selected file -->
+            <p id="fileName">No file chosen</p>
             <button type="submit">Upload</button>
         </form>
         <p id="status"></p>
@@ -92,13 +92,11 @@
         let fileInput = document.getElementById("fileInput");
         let fileNameDisplay = document.getElementById("fileName");
 
-        // Update filename when a file is selected
         fileInput.addEventListener("change", function () {
             let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
-            fileNameDisplay.textContent = fileName; // Update the filename display
+            fileNameDisplay.textContent = fileName;
         });
 
-        // Handle file upload
         document.getElementById("uploadForm").addEventListener("submit", async function (event) {
             event.preventDefault();
 
