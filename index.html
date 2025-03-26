@@ -50,8 +50,10 @@
         }
         #fileName {
             font-size: 0.9em;
-            color: #555;
-            margin-top: 10px;
+            color: #999;
+            margin-top: 5px;
+            font-style: italic;
+            display: block;
         }
         button {
             background-color: #800000;
@@ -112,8 +114,9 @@
         let uploadStatus = document.getElementById("upload-status");
 
         fileInput.addEventListener("change", function () {
-            let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
-            fileNameDisplay.textContent = fileName;
+        let fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file selected yet";
+        fileNameDisplay.textContent = fileName;
+        fileNameDisplay.style.color = fileInput.files.length > 0 ? "#3D0C02" : "#999";
         });
 
         document.getElementById("uploadForm").addEventListener("submit", async function (event) {
