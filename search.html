@@ -13,11 +13,13 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            width: 80%;
-            max-width: 800px;
-            margin: 50px auto;
+            width: 600px;
             background: white;
             padding: 20px;
             border-radius: 15px;
@@ -28,7 +30,7 @@
             color: #800000;
         }
         input {
-            width: 70%;
+            width: 80%;
             padding: 10px;
             font-size: 1em;
             border: 1px solid #ccc;
@@ -42,95 +44,67 @@
             font-size: 1em;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #600000;
         }
-        .results {
+        #results {
             margin-top: 20px;
             text-align: left;
         }
-        .result-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
+        .file-item {
             padding: 10px;
-            border-bottom: 1px dashed #800000;
+            border-bottom: 1px solid #ddd;
         }
-        .circle {
-            width: 30px;
-            height: 30px;
-            background: #3D0C02;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-        .file-info {
-            flex-grow: 1;
-        }
-        .file-info p {
-            margin: 3px 0;
-        }
-        .download-link {
+        .file-item a {
             color: #800000;
-            font-weight: bold;
             text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Search for a Document</h1>
-        <input type="text" id="searchQuery" placeholder="Enter filename...">
+        <input type="text" id="searchQuery" placeholder="Enter filename or hash...">
         <button onclick="searchFiles()">Search</button>
-        <div class="results" id="resultsContainer"></div>
+        <div id="results"></div>
     </div>
-    
+
     <script>
     function searchFiles() {
-    let query = document.getElementById("searchQuery").value.trim();
+        let query = document.getElementById("searchQuery").value.trim();
 
-    if (!query) {
-        alert("Please enter a search query.");
-        return;
+        if (!query) {
+            alert("Please enter a search query.");
+            return;
+        }
+
+        fetch(`https://your-backend-url/search?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            let resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (data.results && data.results.length > 0) {
+                data.results.forEach(file => {
+                    let fileDiv = document.createElement("div");
+                    fileDiv.classList.add("file-item");
+                    fileDiv.innerHTML = `
+                        <p><strong>Filename:</strong> ${file.filename}</p>
+                        <p><strong>Hash:</strong> ${file.hash}</p>
+                        <p><strong>Upload Date:</strong> ${new Date(file.upload_date).toLocaleString()}</p>
+                        <p><a href="${file.file_url}" target="_blank">Download File</a></p>
+                    `;
+                    resultsDiv.appendChild(fileDiv);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>No matching files found.</p>";
+            }
+        })
+        .catch(error => console.error("Error:", error));
     }
-
-    fetch(`https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/search?query=${encodeURIComponent(query)}`)
-    .then(response => response.json())
-    .then(data => displayResults(data))  // Call a function to display the results properly
-    .catch(error => console.error("Error:", error));
-}
-
-function displayResults(results) {
-    let resultsContainer = document.getElementById("results");
-    resultsContainer.innerHTML = ""; // Clear previous results
-
-    if (results.length === 0) {
-        resultsContainer.innerHTML = "<p>No files found.</p>";
-        return;
-    }
-
-    results.forEach((file, index) => {
-        let fileElement = document.createElement("div");
-        fileElement.innerHTML = `
-            <div class="result">
-                <div class="index-circle">${index + 1}</div>
-                <div class="file-details">
-                    <p><strong>Filename:</strong> ${file.filename}</p>
-                    <p><strong>Hash:</strong> ${file.hash}</p>
-                    <p><strong>Upload Date:</strong> ${new Date(file.upload_date).toLocaleString()}</p>
-                    <a href="${file.file_url}" target="_blank" class="download-link">Download File</a>
-                </div>
-            </div>
-            <hr class="divider">
-        `;
-        resultsContainer.appendChild(fileElement);
-    });
-}
     </script>
 </body>
 </html>
