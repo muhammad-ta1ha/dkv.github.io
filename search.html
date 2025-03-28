@@ -49,13 +49,27 @@
         button:hover {
             background-color: #600000;
         }
+        #results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .file-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .file-item a {
+            color: #800000;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Search for a Document</h1>
-        <input type="text" id="searchQuery" placeholder="Enter filename...">
+        <input type="text" id="searchQuery" placeholder="Enter filename or hash...">
         <button onclick="searchFiles()">Search</button>
+        <div id="results"></div>
     </div>
 
     <script>
@@ -67,15 +81,28 @@
             return;
         }
 
-        fetch("https://your-backend-url/files", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ search: query })
-        })
+        fetch(`https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/search?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
-        .then(data => console.log("Search request sent:", data))
+        .then(data => {
+            let resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (data.results && data.results.length > 0) {
+                data.results.forEach(file => {
+                    let fileDiv = document.createElement("div");
+                    fileDiv.classList.add("file-item");
+                    fileDiv.innerHTML = `
+                        <p><strong>Filename:</strong> ${file.filename}</p>
+                        <p><strong>Hash:</strong> ${file.hash}</p>
+                        <p><strong>Upload Date:</strong> ${new Date(file.upload_date).toLocaleString()}</p>
+                        <p><a href="${file.file_url}" target="_blank">Download File</a></p>
+                    `;
+                    resultsDiv.appendChild(fileDiv);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>No matching files found.</p>";
+            }
+        })
         .catch(error => console.error("Error:", error));
     }
     </script>
