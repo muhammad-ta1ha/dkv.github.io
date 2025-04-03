@@ -3,52 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Vault</title>
+    <title>Decentralized Knowledge Vault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Georgia', serif;
+            font-family: 'Times New Roman', Times, serif;
         }
-
         body {
             background-color: #F8F5F0;
             height: 100vh;
+        }
+        header {
+            width: 100%;
+            height: 100px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            color: #3D0C02;
-            text-align: center;
+            position: fixed;
+            z-index: 99;
+            box-shadow: 0 0 10px #000;
+            background: #3b0d0c;
         }
-
-        h1 {
-            font-size: 3em;
-            color: #800000;
-            margin-bottom: 30px;
+        .center-search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 700px;
+            padding: 0 20px;
+            z-index: 98;
+        }
+        header .logo {
+            color: #fff;
+            margin-left: 50px;
             text-transform: uppercase;
+            font-size: 20px;
         }
-
         .search-box {
-            width: 80%;
-            max-width: 800px;
             position: relative;
+            width: 100%;
         }
-
         .search-box input {
             width: 100%;
             height: 60px;
             border: none;
             outline: none;
-            background: #f2f2f2;
+            background: #F8F5F0;
             border-radius: 30px;
-            color: gray;
-            font-size: 20px;
-            padding: 0 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            color: #3b0d0c;
+            font-size: 18px;
+            padding: 0 70px 0 25px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
         }
-
         .search-box button {
             cursor: pointer;
             width: 60px;
@@ -58,58 +68,161 @@
             position: absolute;
             top: 0;
             right: 0;
-            background: #800000;
+            background: #3b0d0c;
             color: white;
-            font-size: 1.5em;
+        }
+        header ul {
+            display: flex;
+            justify-content: space-evenly;
+            margin-right: 50px;
+        }
+        header ul li {
+            list-style: none;
+        }
+        header ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 10px 15px;
+        }
+        header ul li a:hover {
+            border-bottom: 2px solid #7f0f0e;
+        }
+        header .menu {
+            font-size: 2.5em;
+            display: none;
+            margin-right: 20px;
+            color: white;
+        }
+        @media (max-width: 1000px) {
+            header ul {
+                position: fixed;
+                top: 100px;
+                right: -100%;
+                background: #3b0d0c;
+                height: calc(100vh - 100px);
+                width: 50%;
+                flex-direction: column;
+                align-items: center;
+                transition: right 0.5s linear;
+            }
+            header .menu {
+                display: block;
+            }
+            #chk1:checked ~ ul {
+                right: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            header .logo {
+                font-size: 16px;
+                margin-left: 8px;
+            }
+            header ul {
+                width: 100%;
+            }
+            .search-box input {
+                height: 50px;
+            }
+            .search-box button {
+                height: 50px;
+                width: 50px;
+            }
+        }
+
+        /* Fade Effect */
+        #mainContent {
+            transition: opacity 0.5s ease-in-out;
         }
 
         #results {
-            margin-top: 30px;
-            width: 80%;
-            max-width: 800px;
-            background: white;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
         }
 
         .file-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #3b0d0c;
+        }
+
+        .file-item p {
+            margin: 5px 0;
         }
 
         .file-item a {
-            color: #800000;
-            text-decoration: none;
+            color: #3b0d0c;
             font-weight: bold;
+            text-decoration: none;
         }
 
+        .file-item a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Knowledge Vault</h1>
 
-    <div class="search-box">
-        <input type="text" id="searchQuery" placeholder="Enter filename or hash...">
-        <button onclick="searchFiles()"><i class="fa fa-search"></i></button>
+    <!-- Main Content -->
+    <div id="mainContent">
+        <header>
+            <input type="checkbox" name="" id="chk1">
+            <div class="logo"><h1>KNOWLEDGE VAULT</h1></div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Product</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact</a></li>
+                <li>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </li>
+            </ul>
+            <div class="menu">
+                <label for="chk1">
+                    <i class="fa fa-bars"></i>
+                </label>
+            </div>
+        </header>
+
+        <div class="center-search-container">
+            <div class="search-box">
+                <input type="text" id="searchQuery" placeholder="Enter filename or hash...">
+                <button onclick="searchFiles()"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
     </div>
 
+    <!-- Search Results -->
     <div id="results"></div>
 
     <script>
     function searchFiles() {
         let query = document.getElementById("searchQuery").value.trim();
-
+        
         if (!query) {
             alert("Please enter a search query.");
             return;
         }
 
+        // Fade out main content
+        document.getElementById("mainContent").style.opacity = "0";
+        
         fetch(`https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/search?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
             let resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
+            resultsDiv.style.display = "block";
 
             if (data.results && data.results.length > 0) {
                 data.results.forEach(file => {
@@ -126,6 +239,11 @@
             } else {
                 resultsDiv.innerHTML = "<p>No matching files found.</p>";
             }
+
+            // Fade in results
+            setTimeout(() => {
+                resultsDiv.style.opacity = "1";
+            }, 100);
         })
         .catch(error => console.error("Error:", error));
     }
