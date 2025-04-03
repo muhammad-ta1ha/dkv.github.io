@@ -57,10 +57,13 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
-        .file-item a {
-            color: #800000;
-            text-decoration: none;
-            font-weight: bold;
+        .file-item button {
+            background-color: #008000;
+            padding: 8px 12px;
+            font-size: 0.9em;
+        }
+        .file-item button:hover {
+            background-color: #006400;
         }
     </style>
 </head>
@@ -95,7 +98,7 @@
                         <p><strong>Filename:</strong> ${file.filename}</p>
                         <p><strong>Hash:</strong> ${file.hash}</p>
                         <p><strong>Upload Date:</strong> ${new Date(file.upload_date).toLocaleString()}</p>
-                        <p><a href="${file.file_url}" target="_blank">Download File</a></p>
+                        <button onclick="downloadFile('${file.file_url}', '${file.filename}')">Download File</button>
                     `;
                     resultsDiv.appendChild(fileDiv);
                 });
@@ -104,6 +107,15 @@
             }
         })
         .catch(error => console.error("Error:", error));
+    }
+
+    function downloadFile(fileUrl, fileName) {
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.download = fileName; // This suggests the filename for download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
     </script>
 </body>
