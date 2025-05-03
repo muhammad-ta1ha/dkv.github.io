@@ -73,7 +73,7 @@
         }
         header ul {
             display: flex;
-            justify-content: space-evenly;
+            justify-content: flex-end;
             margin-right: 50px;
         }
         header ul li {
@@ -81,13 +81,16 @@
         }
         header ul li a {
             text-decoration: none;
-            color: #fff;
-            font-weight: 600;
+            background: #F8F5F0;
+            color: #3b0d0c;
+            font-weight: bold;
             text-transform: uppercase;
-            padding: 10px 15px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
         }
         header ul li a:hover {
-            border-bottom: 2px solid #7f0f0e;
+            background: #e6ded5;
         }
         header .menu {
             font-size: 2.5em;
@@ -176,14 +179,8 @@
         <header>
             <div class="logo"><h1>KNOWLEDGE VAULT</h1></div>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact</a></li>
                 <li>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="upload.html">Upload a Document</a>
                 </li>
             </ul>
             <div class="menu">
