@@ -123,12 +123,12 @@
       const data = await response.json();
       
       if (data.success) {
-        alert("Login successful!");
-        // Redirect or take appropriate action on success
-      } else {
+        window.location.href = "https://muhammad-ta1ha.github.io/dkv.github.io/upload.html";
+      }
+      else {
         alert("Invalid email or password!");
       }
-    });
+
 
     // SHA-256 hashing function
     async function sha256(message) {
