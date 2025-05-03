@@ -15,6 +15,7 @@
         body {
             background-color: #F8F5F0;
             height: 100vh;
+            position: relative;
         }
         header {
             width: 100%;
@@ -170,6 +171,64 @@
         .file-item a:hover {
             text-decoration: underline;
         }
+
+        /* Contact Us Button */
+        .contact-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3b0d0c;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: #e6ded5;
+        }
+
+        /* No Results Found Styling */
+        .no-results {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3b0d0c;
+            text-align: center;
+            background-color: #F8F5F0;
+            border: 5px dashed #3b0d0c;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .no-results.show {
+            opacity: 1;
+        }
+
+        .no-results .message {
+            margin-bottom: 10px;
+        }
+
+        .no-results .message span {
+            font-size: 1.5rem;
+            display: block;
+        }
+
+        .no-results .message .normal-text {
+            font-weight: normal;
+        }
     </style>
 </head>
 <body>
@@ -201,6 +260,19 @@
     <!-- Search Results -->
     <div id="results"></div>
 
+    <!-- No Results Message -->
+    <div id="noResults" class="no-results">
+        <div class="message">
+            <p><strong>Nothing in the vault that match your query.</strong></p>
+            <p class="normal-text">Maybe the knowledge you're seeking is hidden deeper.</p>
+        </div>
+    </div>
+
+    <!-- Contact Us Button -->
+    <a href="contactUS.html">
+        <button class="contact-btn">Contact Us</button>
+    </a>
+
     <script>
     function searchFiles() {
         let query = document.getElementById("searchQuery").value.trim();
@@ -212,7 +284,8 @@
 
         // Fade out main content
         document.getElementById("mainContent").style.opacity = "0";
-        
+        document.getElementById("noResults").classList.remove('show'); // Hide previous no-results message
+
         fetch(`https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/search?query=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
@@ -233,7 +306,8 @@
                     resultsDiv.appendChild(fileDiv);
                 });
             } else {
-                resultsDiv.innerHTML = "<p>No matching files found.</p>";
+                // Show no results message
+                document.getElementById("noResults").classList.add('show');
             }
 
             // Fade in results
