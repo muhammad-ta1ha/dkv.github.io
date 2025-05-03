@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Responsive Contact Us Page</title>
   <script src="https://kit.fontawesome.com/c32adfdcda.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <!-- Main Section -->
   <section>
     <!-- Section Header -->
@@ -17,11 +18,11 @@
         <p>"From idea to reality, our Decentralized Knowledge Vault makes research simple and efficient. With a secure, decentralized platform, it brings all the information you need to one place. No more endless searching—just fast, focused access to knowledge."</p>
       </div>
     </div>
-    
+
     <!-- Contact Info and Form Container -->
     <div class="container">
       <div class="row">
-        
+
         <!-- Contact Information -->
         <div class="contact-info">
           <!-- Address -->
@@ -31,10 +32,10 @@
             </div>
             <div class="contact-info-content">
               <h4>Address</h4>
-              <p>adiyala Camp Road,<br/> los angeles, rawalpindi<br/> 55060</p>
+              <p>Adiyala Camp Road,<br/> Los Angeles, Rawalpindi<br/> 55060</p>
             </div>
           </div>
-          
+
           <!-- Phone -->
           <div class="contact-info-item">
             <div class="contact-info-icon">
@@ -45,7 +46,7 @@
               <p>+92 571-457-2321</p>
             </div>
           </div>
-          
+
           <!-- Email -->
           <div class="contact-info-item">
             <div class="contact-info-icon">
@@ -57,39 +58,76 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Contact Form -->
         <div class="contact-form">
-          <form action="" id="contact-form">
+          <form id="contact-form">
             <h2>Send Message</h2>
             <!-- Full Name Input -->
             <div class="input-box">
-              <input type="text" required="true" name="">
+              <input type="text" id="name" required>
               <span>Full Name</span>
             </div>
-            
+
             <!-- Email Input -->
             <div class="input-box">
-              <input type="email" required="true" name="">
+              <input type="email" id="email" required>
               <span>Email</span>
             </div>
-            
+
             <!-- Message Textarea -->
             <div class="input-box">
-              <textarea required="true" name=""></textarea>
+              <textarea id="message" required></textarea>
               <span>Type your Message...</span>
             </div>
-            
+
             <!-- Submit Button -->
             <div class="input-box">
-              <input type="submit" value="Send" name="">
+              <input type="submit" value="Send">
             </div>
           </form>
         </div>
-        
+
       </div>
     </div>
   </section>
-  
+
+  <!-- Form Handling Script -->
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !email || !message) {
+        alert("All fields are required.");
+        return;
+      }
+
+      try {
+        const response = await fetch("https://db4d0a2c-d261-450e-a254-1ee3eaa7a37b-00-1fmxpijl8scgo.pike.replit.dev/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert("Message sent successfully!");
+          document.getElementById("contact-form").reset();
+        } else {
+          alert(data.error || "Something went wrong.");
+        }
+      } catch (err) {
+        alert("Network error. Please try again.");
+        console.error(err);
+      }
+    });
+  </script>
+
 </body>
 </html>
